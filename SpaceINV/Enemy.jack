@@ -1,0 +1,80 @@
+class Enemy{
+    field SpaceGame game;
+    field int Xposition;
+    field int Yposition;
+    field boolean EnemyBulletMotion;
+    field boolean canShoot;
+    field boolean Alive;
+    field boolean Dir;
+    
+    constructor Enemy new(SpaceGame Agame, int Pos, int Ypos, boolean canShoot1){
+        let game=Agame;
+        let Xposition = Pos;
+        let Yposition = Ypos;
+        do drawEnemy(Xposition,Yposition);
+        let canShoot = canShoot1;
+        let Alive = true;
+        let Dir = false;
+        let EnemyBulletMotion = false;
+        return this;
+    }
+
+    method void drawEnemy(int x, int y){
+        var SpaceBoard board;
+        let board = game.getBoard();
+        do board.drawEnemy(x,y);
+        return;
+    }
+
+    method void destroyEnemy(int x, int y){
+        var SpaceBoard board;
+        let board = game.getBoard();
+        do board.destroyEnemy(x,y);
+        return; 
+    }
+
+    method boolean bulletMotion(){
+        return EnemyBulletMotion;
+    }
+
+    method void setEnemyBulletMotion(boolean statement){
+        let EnemyBulletMotion = statement;
+        return;
+    }
+
+    method boolean isAlive(){
+        return Alive;
+    }
+
+    method void setAlive(boolean exp){
+        let Alive = exp;
+        return;
+    }
+
+    method boolean getDir(){
+        return Dir;
+    }
+
+    method void setDir(boolean stmnt){
+        let Dir = stmnt;
+        return;
+    }
+
+    method int getEnemyY(){
+        return Yposition;
+    }
+
+    method void setEnemyY(int y){
+        let Yposition = y;
+        return;
+    }
+
+    method int getEnemyX(){
+        return Xposition;
+    }
+
+    method void setEnemyX(int x){
+        let Xposition = x;
+        return;
+    }
+}

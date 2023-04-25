@@ -1,0 +1,667 @@
+class SpaceBoard {
+    field Int score;
+    field Int lives;
+    field Int mrtvibrodovi;
+    field SpaceGame game;
+    field SpaceGuard guard1;
+    field SpaceGuard guard2;
+    field SpaceGuard guard3;
+    field SpaceGuard guard4;
+    field Enemy enemy1;
+    field Enemy enemy2;
+    field Enemy enemy3;
+    field Enemy enemy4;
+    field int sizeX, sizeY;
+    field boolean paused;
+    field int x1,y1,x2,y2;
+    field int dir; 
+    constructor SpaceBoard new(SpaceGame Agame, int Ax, int Ay) {
+        var String temp;
+        let mrtvibrodovi = 0;
+        let score =0;
+        let lives =3;
+        let dir = 0;
+        let game = Agame;
+        let sizeX = Ax;
+        let sizeY = Ay;
+        let temp = "Space Invaders";
+        do Output.moveCursor(15,25);
+        do Output.printString(temp);
+        let temp = "press 'Right' or 'Left' to move, 'Space' to SHOOT!";
+        do Output.moveCursor(17,6);
+        do Output.printString(temp);
+        do drawSpaceship((Ax/2)-16,Ay-26, dir);
+        do drawStatus();
+        do Screen.drawLine(1,1,511,1);
+        do Screen.drawLine(1,1,1,255);
+        do Screen.drawLine(511,255,511,1);
+        do Screen.drawLine(1,255,511,255);
+        /*let temp = "Space Invaders";
+        do Output.moveCursor(15,25);
+        do Output.printString(temp);
+        let temp = "press 'Space' to shoot GL&HF";
+        do Output.moveCursor(17,19);
+        do Output.printString(temp);
+        do Screen.drawRectangle(x1,y1,x2,y2);*/
+        return this;
+    }
+
+    method void drawSG(int x){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x,180,x+30,190);
+        return;
+    }
+
+    method void destroySG(int x){
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x,170,x+30,190);
+        return;
+    }
+
+    method void drawEnemy(int x, int y){
+        do Screen.setColor(true);
+        do Screen.drawRectangle(x,y-10,x+15,y);
+        return;
+    }
+
+    method Int getMrtviBrodovi(){
+        return mrtvibrodovi;
+    }
+
+    method void destroyEnemy(int x,int y){
+        do Screen.setColor(false);
+        do Screen.drawRectangle(x,y-10,x+15,y);
+        return;
+    }
+
+    /*method void boardUpdate(){
+        do Screen.clearScreen();
+        do Screen.drawLine(1,1,511,1);
+        do Screen.drawLine(1,1,1,255);
+        do Screen.drawLine(511,255,511,1);
+        do Screen.drawLine(1,255,511,255);
+        do drawSpaceship();
+        return;
+    }*/
+
+    method void increaseMrtviBrodovi(){
+        let mrtvibrodovi= mrtvibrodovi+1;
+        return;
+    }
+        
+    method void drawSpaceship(int x, int y, int dir) {
+        if (dir = 0){
+            do Screen.setColor(false);
+            //do Screen.drawRectangle(x,y,x+30,y+10);
+            do Screen.drawRectangle(x-10,y,x+20,y+10);
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x, y, x+30, y+10);
+            do Sys.wait(50);
+        }
+        if (dir = 1){
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x+10,y,x+40,y+10);
+            //do Screen.drawRectangle(x-20,y,x+10,y+10);
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x,y,x+30,y+10);
+            do Sys.wait(50);   
+        }
+        return;
+    }
+
+    method void drawStatus(){
+        var String text;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(2,2,510,40);
+        do Screen.setColor(true);
+        let text = "Score: ";
+        do Output.moveCursor(2,2);
+        do Output.printString(text);
+        do Output.moveCursor(2,9);
+        do Output.printInt(score);
+        do Screen.drawLine(1,40,511,40);
+        let text = "Lives: ";
+        do Output.moveCursor(2,50);
+        do Output.printString(text);
+        do Output.moveCursor(2,58);
+        do Output.printInt(lives);
+        let text = "MEDIUM: press '3'";
+        do Output.moveCursor(10,2);
+        do Output.printString(text);
+        let text = "HARD: press '2'";
+        do Output.moveCursor(10,22);
+        do Output.printString(text);
+        let text = "ULTRA HARD: press '1'";
+        do Output.moveCursor(10,42);
+        do Output.printString(text);
+        do text.dispose();
+        return;
+    }
+
+    method void drawScore(){
+        if (game.getNeutrala() = 1){
+            let score = score + 125;
+        }
+        if (game.getNeutrala() = 0){
+            let score = score + 100 + (100-game.getSpeed());
+        }
+        do Screen.setColor(false);
+        do Screen.drawRectangle(2,9,12,19);
+        do Screen.setColor(true);
+        do Output.moveCursor(2,9);
+        do Output.printInt(score);
+        return;
+    }
+
+    method void drawLives(){
+        let lives = lives -1;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(2,58,12,64);
+        do Screen.setColor(true);
+        do Output.moveCursor(2,58);
+        do Output.printInt(lives);
+        return;
+    }
+
+    method void lives0(){
+        let lives = 0;
+        return;
+    }
+
+    method void drawGameOver(){
+        var String text;
+        let score = score + (lives * 500);
+        let lives = 0;
+        do Screen.setColor(false);
+        do Screen.drawRectangle(2,9,12,19);
+        do Screen.setColor(true);
+        do Output.moveCursor(2,9);
+        do Output.printInt(score);
+        do Screen.setColor(true);
+        do Output.moveCursor(2,25);
+        let text = "GAME OVER";
+        do Output.printString(text);
+        do Screen.setColor(false);
+        do Screen.drawRectangle(2,58,12,64);
+        do Output.moveCursor(2,58);
+        do Output.printInt(lives);
+        do text.dispose();
+        return;
+    }
+
+    method void EnemyShoot(int x, int y, boolean bulletMotion){
+        var int x1;
+        var int ix;
+        var int y1;
+        var int iy;
+        var boolean EBM;
+        var int Key;
+        var Spaceship spaceship;
+        let spaceship = game.getSpaceship();
+        let x1 = x;
+        let y1 = y;
+        let EBM = bulletMotion;
+        let enemy1 = game.getEnemy(1);
+        do enemy1.setEnemyBulletMotion(true);
+        let guard1 = game.getSpaceGuard(1);
+        let guard2 = game.getSpaceGuard(2);
+        let guard3 = game.getSpaceGuard(3);
+        let guard4 = game.getSpaceGuard(4);
+        while (EBM){
+            let Key = Keyboard.keyPressed();
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x1+15,y1,x1+15,y1+10);
+            do Sys.wait(game.getSpeed()+50);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x1+15,y1,x1+15,y1+9);
+            if(Key=132){
+                //right aarow
+                if((spaceship.posX()+10)<480){
+                    do spaceship.setPosX();
+                }
+                //do spaceship.setPosY();
+                do drawSpaceship(spaceship.posX(),spaceship.posY(), 0);
+            }
+            if(Key=130){
+                //left aarow
+                if((spaceship.posX()-10)>0){
+                    do spaceship.setPosXneg();
+                }
+                //do spaceship.setPosYneg();
+                do drawSpaceship(spaceship.posX(),spaceship.posY(), 1);
+            }
+            if(Key = 81){
+                //q
+                do Screen.clearScreen();
+                do Sys.halt();
+            }
+            if(mrtvibrodovi < 4){
+                let ix = spaceship.posX();
+                let iy = spaceship.posY();
+                if((x1>(ix-20))&(x1<(ix-5))){
+                    if((y1-10<iy)|(y1-10=iy)){
+                        do drawLives();
+                        do Screen.setColor(false);
+                        do Screen.drawRectangle(x1+15,y1,x1+15,y1+10);
+                        do enemy1.setEnemyBulletMotion(false);
+                        let EBM=false;
+                    }
+                }
+            }
+
+            if(guard1.isAlive()){
+                if((((x1>85)|(x1=85)) & ((x1<115)|(x1=115)))){
+                    if((y1+10>185)|(y1+10=185)){
+                        //let guard = game.getSpaceGuard(1);
+                        do guard1.destroySpaceGuard(100);
+                        let EBM = false;
+                        do enemy1.setEnemyBulletMotion(false);
+                        do guard1.setAlive(false);
+                    }
+                }
+            }
+
+            if(guard2.isAlive()){
+                if (((x1>185)|(x1=185)) & ((x1<215)|(x1=215))){
+                    if((y1+10>185)|(y1+10=185)){
+                        do guard2.destroySpaceGuard(200);
+                        let EBM = false;
+                        do enemy1.setEnemyBulletMotion(false);
+                        do guard2.setAlive(false);
+                    }
+                }
+            }
+
+            if(guard3.isAlive()){
+                if (((x1>285)|(x1=285)) & ((x1<315)|(x1=315))){
+                    if((y1+10>185)|(y1+10=185)){
+                        do guard3.destroySpaceGuard(300);
+                        let EBM = false;
+                        do enemy1.setEnemyBulletMotion(false);
+                        do guard3.setAlive(false);
+                    }
+                }
+            }
+
+            if(guard4.isAlive()){
+                if (((x1>385)|(x1=385)) & ((x1<415)|(x1=415))){
+                    if((y1+10>185)|(y1+10=185)){
+                        do guard4.destroySpaceGuard(400);
+                        let EBM = false;
+                        do enemy1.setEnemyBulletMotion(false);
+                        do guard4.setAlive(false);
+                    }
+                }
+            }
+            if ((y1+10)>240){
+                do Screen.setColor(false);
+                do Screen.drawRectangle(x1+15,y1,x1+15,y1+10);
+                let EBM = false;
+                do enemy1.setEnemyBulletMotion(false);
+            }else{
+                let y1 = y1+10;
+            }
+        }return;
+    }
+
+    method void shoot(int x, int y, boolean bulletMotion){
+        var int x1;
+        var int ix;
+        var int y1;
+        var int iy;
+        var boolean BM;
+        var int Key;
+        var Spaceship spaceship;
+        var String temp;
+        //var SpaceGuard guard1;
+        //let guard1 = SpaceGame.getSpaceGuard1;
+        let spaceship = game.getSpaceship();
+        let x1 = x;
+        let y1 = y;
+        let BM = bulletMotion;
+        do spaceship.setBulletMotion(true);
+        let guard1 = game.getSpaceGuard(1);
+        let guard2 = game.getSpaceGuard(2);
+        let guard3 = game.getSpaceGuard(3);
+        let guard4 = game.getSpaceGuard(4);
+        let enemy1 = game.getEnemy(1);
+        let enemy2 = game.getEnemy(2);
+        let enemy3 = game.getEnemy(3);
+        let enemy4 = game.getEnemy(4);
+        while (BM){
+            let Key = Keyboard.keyPressed();
+            //if((game.getPocelo_je() - (20 * (game.getPocelo_je()/20))) = 0){
+            do Screen.setColor(true);
+            do Screen.drawRectangle(x1+15,y1-10,x1+15,y1);
+            do Sys.wait(game.getSpeed()+50);
+            do Screen.setColor(false);
+            do Screen.drawRectangle(x1+15,y1-9,x1+15,y1);
+            //}
+            if(Key=132){
+                //right aarow
+                if((spaceship.posX()+10)<480){
+                    do spaceship.setPosX();
+                }
+                //do spaceship.setPosY();
+                do drawSpaceship(spaceship.posX(),spaceship.posY(), 0);
+            }
+
+            if(Key=130){
+                //left aarow
+                if((spaceship.posX()-10)>0){
+                    do spaceship.setPosXneg();
+                }
+                //do spaceship.setPosYneg();
+                do drawSpaceship(spaceship.posX(),spaceship.posY(), 1);
+            }
+
+            if(Key = 81){
+                //q
+                do Screen.clearScreen();
+                do Sys.halt();
+            }
+
+            if((enemy1.isAlive()) & ((((game.getPocelo_je() - (5 * (game.getPocelo_je()/5))))*game.getNeutrala()) = 0)){
+                if(enemy1.getDir() = false){
+                    if((enemy1.getEnemyX()+10)<480){
+                        do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                        do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                    }
+                    if((enemy1.getEnemyX()+10)=480) {
+                        do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        do enemy1.setEnemyY(enemy1.getEnemyY()+10);
+                        do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                        do enemy1.setDir(true);
+                    }    
+                }else{
+                    if((enemy1.getEnemyX()-10)>20){
+                        do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                        do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                    }
+                    if((enemy1.getEnemyX()-10)=20) {
+                        do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        do enemy1.setEnemyY(enemy1.getEnemyY()+10);
+                        do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                        do enemy1.setDir(false);
+                    } 
+                }
+                if (enemy1.getEnemyY()=170){
+                    do lives0();
+                    do drawGameOver();
+                    do Sys.halt();
+                }  
+            }
+
+            if((enemy2.isAlive())& ((game.getPocelo_je() - (5 * (game.getPocelo_je()/5)))*game.getNeutrala() = 0)){
+                if(enemy2.getDir() = false){
+                    if((enemy2.getEnemyX()+10)<480){
+                        do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        do enemy2.setEnemyX(enemy2.getEnemyX()+10);
+                        do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                    }
+                    if((enemy2.getEnemyX()+10)=480) {
+                        do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        do enemy2.setEnemyY(enemy2.getEnemyY()+10);
+                        do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                        do enemy2.setDir(true);
+                    }    
+                }else{
+                    if((enemy2.getEnemyX()-10)>20){
+                        do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        do enemy2.setEnemyX(enemy2.getEnemyX()-10);
+                        do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                    }
+                    if((enemy2.getEnemyX()-10)=20) {
+                        do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        do enemy2.setEnemyY(enemy2.getEnemyY()+10);
+                        do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                        do enemy2.setDir(false);
+                    } 
+                } 
+                if (enemy2.getEnemyY()=170){
+                    do lives0();
+                    do drawGameOver();
+                    do Sys.halt();
+                }      
+            }
+
+            if((enemy3.isAlive())& ((game.getPocelo_je() - (5* (game.getPocelo_je()/5)))*game.getNeutrala() = 0)){
+                if(enemy3.getDir() = false){
+                    if((enemy3.getEnemyX()+10)<480){
+                        do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        do enemy3.setEnemyX(enemy3.getEnemyX()+10);
+                        do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                    }
+                    if((enemy3.getEnemyX()+10)=480) {
+                        do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        do enemy3.setEnemyY(enemy3.getEnemyY()+10);
+                        do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                        do enemy3.setDir(true);
+                    }    
+                }else{
+                    if((enemy3.getEnemyX()-10)>20){
+                        do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        do enemy3.setEnemyX(enemy3.getEnemyX()-10);
+                        do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                    }
+                    if((enemy3.getEnemyX()-10)=20) {
+                        do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        do enemy3.setEnemyY(enemy3.getEnemyY()+10);
+                        do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                        do enemy3.setDir(false);
+                    } 
+                } 
+                if (enemy3.getEnemyY()=170){
+                    do lives0();
+                    do drawGameOver();
+                    do Sys.halt();
+                }      
+            }
+
+            if((enemy4.isAlive())& ((game.getPocelo_je() - (5 * (game.getPocelo_je()/5))) *game.getNeutrala() = 0)){
+                if(enemy4.getDir() = false){
+                    if((enemy4.getEnemyX()+10)<480){
+                        do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        do enemy4.setEnemyX(enemy4.getEnemyX()+10);
+                        do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                    }
+                    if((enemy4.getEnemyX()+10)=480) {
+                        do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        do enemy4.setEnemyY(enemy4.getEnemyY()+10);
+                        do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                        do enemy4.setDir(true);
+                    }    
+                }else{
+                    if((enemy4.getEnemyX()-10)>20){
+                        do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        do enemy4.setEnemyX(enemy4.getEnemyX()-10);
+                        do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                    }
+                    if((enemy4.getEnemyX()-10)=20) {
+                        do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        do enemy4.setEnemyY(enemy4.getEnemyY()+10);
+                        do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                        do enemy4.setDir(false);
+                    } 
+                } 
+                if (enemy4.getEnemyY()=170){
+                    do lives0();
+                    do drawGameOver();
+                    do Sys.halt();
+                }      
+            }
+
+            /*if((enemy2.isAlive()) & ((game.getPocelo_je() - (5 * (game.getPocelo_je()/5))) = 0)){
+                if((enemy1.getEnemyX()+10)<480){
+                    do enemy1.destroyEnemy(enemy1.getEnemyX(), 1);
+                    do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                    do enemy1.drawEnemy(enemy1.getEnemyX(), 1);
+                }     
+            }*/
+
+            if(guard1.isAlive()){
+                if((((x1>85)|(x1=85)) & ((x1<115)|(x1=115)))){
+                    if((y1-10<190)|(y1-10=190)){
+                        //let guard = game.getSpaceGuard(1);
+                        do guard1.destroySpaceGuard(100);
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do guard1.setAlive(false);
+                    }
+                }
+                    /*else{
+                        let y1 = y1-10;
+                    }
+                }else{
+                    let y1 = y1-10;
+                }*/
+            }
+            
+            if(guard2.isAlive()){
+                if (((x1>185)|(x1=185)) & ((x1<215)|(x1=215))){
+                    if((y1-10<190)|(y1-10=190)){
+                        do guard2.destroySpaceGuard(200);
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do guard2.setAlive(false);
+                    }/*else{
+                        let y1 = y1-10;
+                    }
+                }else{
+                    let y1 = y1-10;*/
+                }
+            }
+
+            if(guard3.isAlive()){
+                if (((x1>285)|(x1=285)) & ((x1<315)|(x1=315))){
+                    if((y1-10<190)|(y1-10=190)){
+                        do guard3.destroySpaceGuard(300);
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do guard3.setAlive(false);
+                    }/*else{
+                        let y1 = y1-10;
+                    }
+                }else{
+                    let y1 = y1-10;*/
+                }
+            }
+
+            if(guard4.isAlive()){
+                if (((x1>385)|(x1=385)) & ((x1<415)|(x1=415))){
+                    if((y1-10<190)|(y1-10=190)){
+                        do guard4.destroySpaceGuard(400);
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do guard4.setAlive(false);
+                    }/*else{
+                        let y1 = y1-10;
+                    }
+                }else{
+                    let y1 = y1-10;
+                }*/
+                }
+            }
+
+            if(enemy1.isAlive()){
+                let ix = enemy1.getEnemyX();
+                let iy = enemy1.getEnemyY();
+                //let temp = "brkovi";
+                //do Output.moveCursor(5,9);
+                //do Output.printInt(ix);
+                if((x1>(ix-20))&(x1<(ix-5))){
+                    if((y1-10<iy)|(y1-10=iy)){
+                        do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do enemy1.setAlive(false);
+                        do increaseMrtviBrodovi();
+                        do drawScore();
+                    }
+                }
+            }
+
+            if(enemy2.isAlive()){
+                let ix = enemy2.getEnemyX();
+                let iy = enemy2.getEnemyY();
+                if((x1>(ix-20))&((x1<(ix-5)))){
+                    if((y1-10<iy)|(y1-10=iy)){
+                        do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do enemy2.setAlive(false);
+                        do increaseMrtviBrodovi();
+                        do drawScore();
+                        
+                    }
+                }
+            }
+
+            if(enemy3.isAlive()){
+                let ix = enemy3.getEnemyX();
+                let iy = enemy3.getEnemyY();
+                if((x1>(ix-20))&((x1<(ix-5)))){
+                    if((y1-10<iy)|(y1-10=iy)){
+                        do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do enemy3.setAlive(false);
+                        do increaseMrtviBrodovi();
+                        do drawScore();
+                        
+                    }
+                }
+            }
+
+            if(enemy4.isAlive()){
+                let ix = enemy4.getEnemyX();
+                let iy = enemy4.getEnemyY();
+                if((x1>(ix-20))&((x1<(ix-5)))){
+                    if((y1-10<iy)|(y1-10=iy)){
+                        do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        let BM = false;
+                        do spaceship.setBulletMotion(false);
+                        do enemy4.setAlive(false);
+                        do increaseMrtviBrodovi();
+                        do drawScore();
+                        
+                    }
+                }
+            }
+
+            if ((y1-10)<50){
+                do Screen.setColor(false);
+                do Screen.drawRectangle(x1+15,y1-10,x1+15,y1);
+                let BM = false;
+                do spaceship.setBulletMotion(false);
+            }else{
+                let y1 = y1-10;
+            }
+
+            if(mrtvibrodovi=4){
+                do drawGameOver();
+                do Sys.halt();
+            }
+
+            do game.increasePocelo_je();
+        
+        }return;
+    } 
+}   
+    /*method int sizeX() {
+        return sizeX;
+    }
+
+    method int sizeY() {
+        return sizeY;
+    }   */
