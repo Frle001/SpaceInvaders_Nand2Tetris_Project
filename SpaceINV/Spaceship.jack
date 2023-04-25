@@ -1,0 +1,61 @@
+class Spaceship {
+    field SpaceGame game;
+    field int posX, posY;
+    field boolean bulletMotion;
+    // the direction the snake is/was moving
+    // 0=none,1=up,2=down,3=left,4=right
+    //field int dir, lastdir;
+    // the history of the snake's movements
+    //field Array histX, histY;
+    constructor Spaceship new(SpaceGame Agame, int Ax, int Ay) {
+        let game = Agame;
+        let posX = Ax;
+        let posY = Ay;
+        let bulletMotion = false;
+        do drawSS();
+        return this;
+    }
+
+    method void drawSS() {
+        var SpaceBoard board;
+        let board = game.getBoard();
+        do board.drawSpaceship(posX, posY, 0);
+        return;
+    }
+
+    method void setPosX(){
+        let posX = posX + 10;
+        return;
+    }
+
+    method void setPosY(){
+        let posY = posY + 10;
+        return;
+    }
+
+    method void setPosXneg(){
+        let posX = posX-10;
+        return;
+    }
+
+    method void setPosYneg(){
+        let posY = posY-10;
+        return;
+    }
+
+    method void setBulletMotion(boolean statement){
+        let bulletMotion = statement;
+        return;
+    }
+
+    method boolean bulletMotion(){
+        return bulletMotion;
+    }
+
+    method int posX() {
+        return posX;
+    }
+    method int posY() {
+        return posY;
+    }
+}

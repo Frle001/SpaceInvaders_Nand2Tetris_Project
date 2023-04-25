@@ -1,0 +1,29 @@
+class Main {
+    function void main() {
+        var SpaceGame game;
+        let game = SpaceGame.new();
+        do game.run();
+	    //do game.dispose();
+        return;
+        /*do Screen.drawRectangle(196,124,200,128);
+        return;*/
+    }
+}
+/*class Main{
+    static void Main(){
+        Screen.clear();
+
+        // Draw a message on the screen
+        Screen.drawString("Hello, Nand2Tetris World!");
+
+        // Wait for a key press
+        var input:int;
+        input = Keyboard.read();
+
+        // Clear the screen
+        Screen.clear();
+
+        // Exit the program
+        return;
+    }
+}*/

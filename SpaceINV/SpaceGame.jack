@@ -1,0 +1,352 @@
+class SpaceGame {
+    field Spaceship spaceship;
+    field Int neutrala;
+    field Int okidac;
+    field Int speed;
+    field int pocelo_je;
+    field Enemy enemy1;
+    field Enemy enemy2;
+    field Enemy enemy3;
+    field Enemy enemy4;
+    field SpaceBoard board;
+    field SpaceGuard guard1;
+    field SpaceGuard guard2;
+    field SpaceGuard guard3;
+    field SpaceGuard guard4;
+    field boolean paused;
+    constructor SpaceGame new() {
+        do Screen.clearScreen();
+        let speed = 1;
+        let board = SpaceBoard.new(this,512,256);
+        let spaceship = Spaceship.new(this, 240, 230);
+        return this;
+    }
+
+    method void run(){
+        var int Key;
+        var boolean broken;
+        var boolean exit;
+        var boolean start; 
+        var boolean ajsad;
+        
+        let ajsad = false;
+        let start = false;
+        let pocelo_je = 0;
+        let exit = false;
+        while(~exit){
+            do Sys.wait(speed);
+            if( paused ) {
+                let broken = false;
+                while(~broken) {
+                    let Key = 0;
+                    while(~Key) {
+                        let Key = Keyboard.keyPressed();
+                    }
+                    if( Key = 80 ) {
+                        // p
+                        let broken = true;
+                        let paused = false;
+                        
+                    }
+                    if( Key = 81 ) {
+                        // q
+                        let broken = true;
+                        let exit = true;
+                    }
+                    //do Sys.wait(100);
+                }
+            }
+
+
+            let Key = Keyboard.keyPressed();
+
+            if(Key=49){
+                let start = true;
+                let speed = 10;
+                let neutrala =0;
+            }
+            if(Key=50){
+                let start = true;
+                let speed = 30;
+                let neutrala =0;
+            }
+            if(Key=51){
+                let start = true;
+                let speed = 0;
+                let neutrala =1;
+            }
+
+            if(start){
+                do Screen.setColor(false);
+                do Screen.drawRectangle(10,50,500,200);
+                do Screen.setColor(true);
+                let guard1 = SpaceGuard.new(this,100);
+                let guard2 = SpaceGuard.new(this,200);
+                let guard3 = SpaceGuard.new(this,300);
+                let guard4 = SpaceGuard.new(this,400);
+                let enemy1 = Enemy.new(this, 30, 90,true);
+                let enemy2 = Enemy.new(this, 60, 130,false);
+                let enemy3 = Enemy.new(this, 90, 90,false);
+                let enemy4 = Enemy.new(this, 120, 130,false);
+                let start = false;
+                let ajsad = true;
+                let okidac = 0;
+                let pocelo_je = pocelo_je + 1;
+            }
+
+            if((pocelo_je>0)&(((pocelo_je - (10 * (pocelo_je/10)))*neutrala) = 0)){
+                if(enemy1.isAlive()){
+                    if(enemy1.getDir() = false){
+                        if((enemy1.getEnemyX()+10)<480){
+                            do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                            do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        }
+                        if((enemy1.getEnemyX()+10)=480) {
+                            do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            do enemy1.setEnemyY(enemy1.getEnemyY()+10);
+                            do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                            do enemy1.setDir(true);
+                        }    
+                    }else{
+                        if((enemy1.getEnemyX()-10)>20){
+                            do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                            do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                        }
+                        if((enemy1.getEnemyX()-10)=20) {
+                            do enemy1.destroyEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            do enemy1.setEnemyY(enemy1.getEnemyY()+10);
+                            do enemy1.drawEnemy(enemy1.getEnemyX(), enemy1.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                            do enemy1.setDir(false);
+                        } 
+                    } 
+                    if (enemy1.getEnemyY()=170){
+                        do board.lives0();
+                        do board.drawGameOver();
+                        do Sys.halt();
+                    }      
+                }
+                if(enemy2.isAlive()){
+                    if(enemy2.getDir() = false){
+                        if((enemy2.getEnemyX()+10)<480){
+                            do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            do enemy2.setEnemyX(enemy2.getEnemyX()+10);
+                            do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        }
+                        if((enemy2.getEnemyX()+10)=480) {
+                            do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            do enemy2.setEnemyY(enemy2.getEnemyY()+10);
+                            do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                            do enemy2.setDir(true);
+                        }    
+                    }else{
+                        if((enemy2.getEnemyX()-10)>20){
+                            do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            do enemy2.setEnemyX(enemy2.getEnemyX()-10);
+                            do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                        }
+                        if((enemy2.getEnemyX()-10)=20) {
+                            do enemy2.destroyEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            do enemy2.setEnemyY(enemy2.getEnemyY()+10);
+                            do enemy2.drawEnemy(enemy2.getEnemyX(), enemy2.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                            do enemy2.setDir(false);
+                        } 
+                    } 
+                    if (enemy2.getEnemyY()=170){
+                        do board.lives0();
+                        do board.drawGameOver();
+                        do Sys.halt();
+                    }      
+                }
+                if(enemy3.isAlive()){
+                    if(enemy3.getDir() = false){
+                        if((enemy3.getEnemyX()+10)<480){
+                            do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            do enemy3.setEnemyX(enemy3.getEnemyX()+10);
+                            do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        }
+                        if((enemy3.getEnemyX()+10)=480) {
+                            do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            do enemy3.setEnemyY(enemy3.getEnemyY()+10);
+                            do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                            do enemy3.setDir(true);
+                        }    
+                    }else{
+                        if((enemy3.getEnemyX()-10)>20){
+                            do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            do enemy3.setEnemyX(enemy3.getEnemyX()-10);
+                            do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                        }
+                        if((enemy3.getEnemyX()-10)=20) {
+                            do enemy3.destroyEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            do enemy3.setEnemyY(enemy3.getEnemyY()+10);
+                            do enemy3.drawEnemy(enemy3.getEnemyX(), enemy3.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                            do enemy3.setDir(false);
+                        } 
+                    } 
+                    if (enemy3.getEnemyY()=170){
+                        do board.lives0();
+                        do board.drawGameOver();
+                        do Sys.halt();
+                    }      
+                }
+                if(enemy4.isAlive()){
+                    if(enemy4.getDir() = false){
+                        if((enemy4.getEnemyX()+10)<480){
+                            do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            do enemy4.setEnemyX(enemy4.getEnemyX()+10);
+                            do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        }
+                        if((enemy4.getEnemyX()+10)=480) {
+                            do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            do enemy4.setEnemyY(enemy4.getEnemyY()+10);
+                            do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()-10);
+                            do enemy4.setDir(true);
+                        }    
+                    }else{
+                        if((enemy4.getEnemyX()-10)>20){
+                            do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            do enemy4.setEnemyX(enemy4.getEnemyX()-10);
+                            do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                        }
+                        if((enemy4.getEnemyX()-10)=20) {
+                            do enemy4.destroyEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            do enemy4.setEnemyY(enemy4.getEnemyY()+10);
+                            do enemy4.drawEnemy(enemy4.getEnemyX(), enemy4.getEnemyY());
+                            //do enemy1.setEnemyX(enemy1.getEnemyX()+10);
+                            do enemy4.setDir(false);
+                        } 
+                    } 
+                    if (enemy4.getEnemyY()=170){
+                        do board.lives0();
+                        do board.drawGameOver();
+                        do Sys.halt();
+                    }      
+                }
+
+                if(board.getMrtviBrodovi()>okidac){
+                    let okidac = okidac + 1;
+                    do board.EnemyShoot(enemy1.getEnemyX(),enemy1.getEnemyY(), enemy1.bulletMotion());
+                }
+            }
+
+            if(board.getMrtviBrodovi()>okidac){
+                    let okidac = okidac + 1;
+                    do board.EnemyShoot(enemy1.getEnemyX(),enemy1.getEnemyY(), enemy1.bulletMotion());
+                }
+
+            if( Key = 80 ) {
+                // p
+                let paused = true;
+            }
+
+            if(Key = 32){
+                do board.shoot(spaceship.posX(),spaceship.posY(), spaceship.bulletMotion());
+            }
+
+            if(Key=132){
+                //right aarow
+                if((spaceship.posX()+10)<480){
+                    do spaceship.setPosX();
+                }
+                //do spaceship.setPosY();
+                do board.drawSpaceship(spaceship.posX(),spaceship.posY(), 0);
+            }
+
+            if(Key=130){
+                //left aarow
+                if((spaceship.posX()-10)>0){
+                    do spaceship.setPosXneg();
+                }
+                //do spaceship.setPosYneg();
+                do board.drawSpaceship(spaceship.posX(),spaceship.posY(), 1);
+            }
+
+            
+
+            if(Key = 81){
+                //q
+                do Screen.clearScreen();
+                let exit = true;
+                do Sys.halt();
+            }
+            do Sys.wait(10);
+            if (ajsad){
+                let pocelo_je = pocelo_je + 1;
+                //do Output.printInt(pocelo_je/2);
+            }
+        }
+        return;
+    }
+
+    method Int getSpeed(){
+        return speed;
+    }
+
+    method Int getNeutrala(){
+        return neutrala;
+    }
+
+    method Enemy getEnemy(int n){
+        if (n=1){
+            return enemy1;
+            }
+        if (n=2){
+            return enemy3;
+            }
+        if (n=3){
+            return enemy2;
+            }
+        if (n=4){
+            return enemy4;
+            }
+        if (n=5){
+            return enemy4;
+            }
+        if (n=6){
+            return enemy4;
+            }
+        return enemy1;
+    }
+
+    method SpaceGuard getSpaceGuard(int n){
+        if (n=1){
+            return guard1;
+            }
+        if (n=2){
+            return guard2;
+            }
+        if (n=3){
+            return guard3;
+            }
+        if (n=4){
+            return guard4;
+            }
+        return guard1;
+    }
+
+    method int getPocelo_je(){
+        return pocelo_je;
+    }
+
+    method void increasePocelo_je(){
+        let pocelo_je = pocelo_je + 1;
+        return;
+    }
+
+    method SpaceBoard getBoard() {
+        return board;
+    }
+
+    method Spaceship getSpaceship() {
+        return spaceship;
+    }
+}

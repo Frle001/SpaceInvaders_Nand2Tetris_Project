@@ -1,0 +1,112 @@
+function Enemy.new 0
+push constant 7
+call Memory.alloc 1
+pop pointer 0
+push argument 0
+pop this 0
+push argument 1
+pop this 1
+push argument 2
+pop this 2
+push pointer 0
+push this 1
+push this 2
+call Enemy.drawEnemy 3
+pop temp 0
+push argument 3
+pop this 4
+push constant 0
+not
+pop this 5
+push constant 0
+pop this 6
+push constant 0
+pop this 3
+push pointer 0
+return
+function Enemy.drawEnemy 1
+push argument 0
+pop pointer 0
+push this 0
+call SpaceGame.getBoard 1
+pop local 0
+push local 0
+push argument 1
+push argument 2
+call SpaceBoard.drawEnemy 3
+pop temp 0
+push constant 0
+return
+function Enemy.destroyEnemy 1
+push argument 0
+pop pointer 0
+push this 0
+call SpaceGame.getBoard 1
+pop local 0
+push local 0
+push argument 1
+push argument 2
+call SpaceBoard.destroyEnemy 3
+pop temp 0
+push constant 0
+return
+function Enemy.bulletMotion 0
+push argument 0
+pop pointer 0
+push this 3
+return
+function Enemy.setEnemyBulletMotion 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 3
+push constant 0
+return
+function Enemy.isAlive 0
+push argument 0
+pop pointer 0
+push this 5
+return
+function Enemy.setAlive 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 5
+push constant 0
+return
+function Enemy.getDir 0
+push argument 0
+pop pointer 0
+push this 6
+return
+function Enemy.setDir 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 6
+push constant 0
+return
+function Enemy.getEnemyY 0
+push argument 0
+pop pointer 0
+push this 2
+return
+function Enemy.setEnemyY 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 2
+push constant 0
+return
+function Enemy.getEnemyX 0
+push argument 0
+pop pointer 0
+push this 1
+return
+function Enemy.setEnemyX 0
+push argument 0
+pop pointer 0
+push argument 1
+pop this 1
+push constant 0
+return

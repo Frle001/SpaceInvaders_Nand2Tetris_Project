@@ -1,0 +1,42 @@
+class SpaceGuard{
+    field SpaceGame game;
+    field int Xposition;
+    field int hits;
+    field boolean Alive;
+    
+    constructor SpaceGuard new(SpaceGame Agame, int Pos){
+        let game=Agame;
+        let hits=0;
+        let Xposition = Pos;
+        do drawSpaceGuard(Xposition);
+        let Alive = true;
+        return this;
+    }
+
+    method void drawSpaceGuard(int x){
+        var SpaceBoard board;
+        let board = game.getBoard();
+        do board.drawSG(x);
+        return;
+    }
+
+    method void destroySpaceGuard(int x){
+        var SpaceBoard board;
+        let board = game.getBoard();
+        do board.destroySG(x);
+        return; 
+    }
+
+    method boolean isAlive(){
+        return Alive;
+    }
+
+    method void setAlive(boolean exp){
+        let Alive = exp;
+        return;
+    }
+
+    method int getHits(){
+        return hits;
+    }
+}
